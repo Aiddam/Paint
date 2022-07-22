@@ -157,8 +157,11 @@ namespace Paint
                 bitmap.UriSource = new Uri(dialog.FileName, UriKind.Relative);
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
-                Image = (ImageSource)ImageSourceConverter.ConvertFrom(dialog.FileName); 
+                Image img = new Image();
+                myImage.Source = bitmap;
             }
         }
+
+        
     }
 }
