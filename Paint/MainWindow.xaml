@@ -26,7 +26,6 @@
         </InkCanvas>
         <Menu Height="20" VerticalAlignment="Top" Background="LightGray">
             <MenuItem Header="File">
-                <MenuItem Header="New Project" ></MenuItem>
                 <MenuItem Header="Open Project" x:Name="OpenButton" Click="OpenButton_Click" ></MenuItem>
                 <MenuItem Header="Save Project" x:Name="SaveButton" Click="SaveButton_Click"></MenuItem>
 
@@ -35,6 +34,7 @@
             </MenuItem>
             <MenuItem Header="Edit" >
                 <MenuItem x:Name="Select" Header="Select" Click="Select_Click"></MenuItem>
+                <MenuItem x:Name="laundry" Header="Laundry" Click="laundry_Click" ></MenuItem>
             </MenuItem>
         </Menu>
         <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3"
@@ -68,10 +68,9 @@
             <Button Grid.Column="3" Grid.Row="1"  VerticalContentAlignment="Center" Background="ForestGreen" Content="Push" Click="UserColor_Button_Click"   VerticalAlignment="Stretch" HorizontalContentAlignment="Center" />
 
 
-            <Slider x:Name="slider" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" VerticalAlignment="Bottom" ValueChanged="Brush_Size_Slider_ValueChanged" Maximum="120" Minimum="1"  />
+            <Slider x:Name="slider" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" VerticalAlignment="Bottom" ValueChanged="Brush_Size_Slider_ValueChanged" Maximum="40" Minimum="1"  />
             <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4" Text="Размер кисточки" VerticalAlignment="Top" TextAlignment="Center" Height="16"/>
-            <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="Стирачка" Click="Laundry_Button_Click"  />
-            <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Стереть" Click="Clear_Surface_Button_Click"  />
+            <Button x:Name="ClearButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Стереть" Click="Clear_Surface_Button_Click"    />
         </Grid>
 
 

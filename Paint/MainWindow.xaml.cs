@@ -17,7 +17,7 @@ namespace Paint
     public partial class MainWindow : Window
     {
         InkCanvas inkCanvas;
-        ColorRGBContoller colorRGBController;
+        ControllerColor controllerColor;
         public MainWindow()
         {
             inkCanvas = new InkCanvas();
@@ -48,21 +48,34 @@ namespace Paint
         {
             byte byteValue;
             bool succes = byte.TryParse(this.textBoxR.Text, out byteValue);
-            colorRGBController = new ColorRGBContoller(TryParseByte(textBoxR.Text),TryParseByte(textBoxG.Text),
+            controllerColor = new ControllerColor(TryParseByte(textBoxR.Text),TryParseByte(textBoxG.Text),
                                                         TryParseByte(textBoxB.Text));
-            ColorFunc(colorRGBController.colorRGB.Red, colorRGBController.colorRGB.Green, colorRGBController.colorRGB.Blue);
+            ColorFunc(controllerColor.colorRGB.Red, controllerColor.colorRGB.Green, controllerColor.colorRGB.Blue);
         }
-
+        /// <summary>
+        /// изменение  размера кисточки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Brush_Size_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         { 
                 inkcanavas.DefaultDrawingAttributes.Height = slider.Value;
                 inkcanavas.DefaultDrawingAttributes.Width = slider.Value;
         }
-       
+       /// <summary>
+       /// очищений поверхности
+       /// </summary>
+       /// <param name="sender"></param>
+       /// <param name="e"></param>
         private void Clear_Surface_Button_Click(object sender, RoutedEventArgs e)
         {
             inkcanavas.Strokes.Clear();
         }
+        /// <summary>
+        /// при нажатии сохраняет изображение в формате .png
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             var saveDlg = new SaveFileDialog
@@ -71,12 +84,9 @@ namespace Paint
                 DefaultExt = ".png",
                 Filter = "PNG (.png)|*.png"
             };
-
             if (saveDlg.ShowDialog() == true)
             {
-
                 SaveInkCanvas(inkcanavas, 96, saveDlg.FileName);
-
             }
 
         }
@@ -85,13 +95,11 @@ namespace Paint
         {
             var width = _inkcanvas.ActualWidth;
             var height = _inkcanvas.ActualHeight;
-
             var size = new Size(width, height);
             _inkcanvas.Measure(size);
 
             var rtb = new RenderTargetBitmap(
-                (int)width,
-                (int)height,
+                (int)width, (int)height,
                 dpi, //dpi x 
                 dpi, //dpi y 
                 PixelFormats.Pbgra32 // pixelformat 
@@ -112,13 +120,17 @@ namespace Paint
             }
         }
 
-        private void Laundry_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (inkcanavas.EditingMode!= InkCanvasEditingMode.EraseByPoint){
-                 inkcanavas.EditingMode = InkCanvasEditingMode.EraseByPoint; }
-            else{ inkcanavas.EditingMode = InkCanvasEditingMode.Ink;}
-            
-         }
+        /// <summary>
+        /// Меняет кисточку на ластик
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        
+        /// <summary>
+        /// добовляет выделение элементов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Select_Click(object sender, RoutedEventArgs e)
         {
             if (inkcanavas.EditingMode != InkCanvasEditingMode.Select)
@@ -127,23 +139,25 @@ namespace Paint
             }
             else{ inkcanavas.EditingMode = InkCanvasEditingMode.Ink; }
         }
+        private void laundry_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (inkcanavas.EditingMode != InkCanvasEditingMode.EraseByPoint)
+            {
+                inkcanavas.EditingMode = InkCanvasEditingMode.EraseByPoint;
+            }
+            else { inkcanavas.EditingMode = InkCanvasEditingMode.Ink; }
+        }
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             App.Current.Shutdown();
         }
-        private byte TryParseByte(string s)
-        {
-            bool succes = byte.TryParse(s, out byte byteValue);
-            if (succes){return byteValue; }
-            MessageBox.Show("Значение RGB может быть в диапазоне [0,255]");
-            return 0;
-        }
-        private void ColorFunc(byte r = 0, byte g = 0, byte b = 0)
-        {
-            inkcanavas.EditingMode = InkCanvasEditingMode.Ink;
-            this.inkcanavas.DefaultDrawingAttributes.Color = System.Windows.Media.Color.FromRgb(r, g, b);
-        }
-
+       
+        /// <summary>
+        /// Открывает изображения формата .png  в данном проектк
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
@@ -160,6 +174,18 @@ namespace Paint
                 Image img = new Image();
                 myImage.Source = bitmap;
             }
+        }
+        private byte TryParseByte(string s)
+        {
+            bool succes = byte.TryParse(s, out byte byteValue);
+            if (succes) { return byteValue; }
+            MessageBox.Show("Значение RGB может быть в диапазоне [0,255]");
+            return 0;
+        }
+        private void ColorFunc(byte r = 0, byte g = 0, byte b = 0)
+        {
+            inkcanavas.EditingMode = InkCanvasEditingMode.Ink;
+            this.inkcanavas.DefaultDrawingAttributes.Color = System.Windows.Media.Color.FromRgb(r, g, b);
         }
 
         
