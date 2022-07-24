@@ -70,6 +70,8 @@ namespace Paint
         private void Clear_Surface_Button_Click(object sender, RoutedEventArgs e)
         {
             inkcanavas.Strokes.Clear();
+            myImage.Source = null;
+
         }
         /// <summary>
         /// при нажатии сохраняет изображение в формате .png
